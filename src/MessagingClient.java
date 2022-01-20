@@ -30,15 +30,15 @@ public class MessagingClient {
         try {
             Socket socket = new Socket(address, port); // connect to the server
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            // send String[] args to the server and wait for reply
+            // send String[] args to the server and wait for response
             oos.writeObject(args);
 
             // get the input stream of server
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String reply = in.readLine();
-            while (reply != null) { // print incoming messages from server
-                System.out.println(reply);
-                reply = in.readLine();
+            String response = in.readLine();
+            while (response != null) { // print incoming messages from server
+                System.out.println(response);
+                response = in.readLine();
             }
             oos.close(); // close the socket
         } catch (IOException ignored) {}

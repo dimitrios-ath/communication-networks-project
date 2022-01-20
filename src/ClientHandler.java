@@ -22,11 +22,8 @@ public class ClientHandler implements Runnable {
      */
     @Override
     public void run() {
-        PrintWriter out = null;
         BufferedReader in = null;
         try {
-            // get the output stream of client
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
             // get the input stream of client
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             ObjectInputStream ois = new ObjectInputStream(clientSocket.getInputStream());
@@ -38,7 +35,6 @@ public class ClientHandler implements Runnable {
         catch (IOException | ClassNotFoundException ignored) {}
         finally { // cleanup
             try {
-                if (out != null) {out.close();}
                 if (in != null) {in.close(); clientSocket.close();}
             }
             catch (IOException ignored) {}
