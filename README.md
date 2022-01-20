@@ -1,15 +1,15 @@
 # Communication Networks Project
 
-_Name/AEM:_ Dimitrios Athanasiadis - 3724
+### **Name/AEM:** Dimitrios Athanasiadis - 3724
 
-**Usage:**
+### **Usage:**
 ```
 Client: java -jar Client.jar <ip> <port number> <FN_ID> <args>
 Server: java -jar Server.jar <port number>
 ```
 
 
-**General Classes:**
+### **General Classes:**
 
 * _Account.java_
   * Holds information about a specific account, such as username, associated authToken and message box.
@@ -17,7 +17,7 @@ Server: java -jar Server.jar <port number>
   * Holds information about a specific message, such as sender, receiver, body and message read state. Additionally, 
   each message has an auto-increment identifier.
 
-**Client Classes:**
+### **Client Classes:**
 
 * _client.java_
   * The client main class. If the command line arguments are **valid**, it creates a MessagingClient object,
@@ -26,7 +26,7 @@ Server: java -jar Server.jar <port number>
   * Creates a **socket** and connects to the server, on the given address and port. It sends the entered command 
   line arguments to the server and waits for response.
 
-**Server Classes:**
+### **Server Classes:**
 
 * _server.java_
   * The server _main_ class. If the command line arguments are **valid**, it creates a MessagingServer object, 
