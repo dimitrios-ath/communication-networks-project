@@ -1,12 +1,21 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class MessagingClient {
+
     String address;
     int port;
     String[] args;
 
+    /**
+     *  constructor
+     *  @param address      server address to connect
+     *  @param port         server port to connect
+     *  @param args         command line arguments to send to the server
+     */
     public MessagingClient(String address, int port, String[] args) {
         this.address = address;
         this.port = port;
@@ -14,48 +23,24 @@ public class MessagingClient {
         SendRequest();
     }
 
-    public void SendRequest() {
-        try (Socket socket = new Socket(address, port)) {
+    /**
+     *  connects to server and waits for reply
+     */
+    private void SendRequest() {
+        try {
+            Socket socket = new Socket(address, port); // connect to the server
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            // send String[] args to the server and wait for reply
+            oos.writeObject(args);
 
-        // writing to server
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-
-        // reading from server
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-        oos.writeObject(args);
-
-        String x = in.readLine();
-        while (x != null) {
-            System.out.println("reply: " + x);
-            x = in.readLine();
-        }
-        oos.close();
-
-
-
-        /*
-        // object of scanner class
-        Scanner sc = new Scanner(System.in);
-        String line = null;
-
-        while (!"exit".equalsIgnoreCase(line)) {
-
-            // reading from user
-            line = sc.nextLine();
-
-            // sending the user input to server
-            out.println(line);
-            out.flush();
-
-            // displaying server reply
-            System.out.println("Server replied " + in.readLine());
-        }
-
-        // closing the scanner object
-        sc.close();*/
+            // get the input stream of server
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String reply = in.readLine();
+            while (reply != null) { // print incoming messages from server
+                System.out.println(reply);
+                reply = in.readLine();
+            }
+            oos.close(); // close the socket
+        } catch (IOException ignored) {}
     }
-    catch (IOException ignored) {}}
-
 }

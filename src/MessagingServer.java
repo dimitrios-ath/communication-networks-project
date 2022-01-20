@@ -3,42 +3,37 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MessagingServer {
+
     private ServerSocket serverSocket;
     private final int port;
 
+    /**
+     *  constructor
+     *  @param port     listening port
+     */
     public MessagingServer(int port) {
         this.port = port;
-        IncomingRequestsHandler();
+        NewClientHandler();
     }
 
-    private void IncomingRequestsHandler() {
+    /**
+     *  listens for incoming connections and accepts them
+     */
+    private void NewClientHandler() {
         try {
-            serverSocket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port); // create a ServerSocket on the given port
             serverSocket.setReuseAddress(true);
-
-            // running infinite loop for getting client request
-            while (true) {
-                // socket object to receive incoming client requests
-                Socket clientSocket = serverSocket.accept();
-                // Displaying that new client is connected to server
-                System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
-                // create a new thread object
+            while (true) { // always listen for connections
+                Socket clientSocket = serverSocket.accept(); // accept incoming connection
                 ClientHandler clientHandler = new ClientHandler(clientSocket);
-                // This thread will handle the client separately
-                new Thread(clientHandler).start();
+                new Thread(clientHandler).start(); // handle the client with ClientHandler() in a new thread
             }
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
+        catch (IOException ignored) {}
+        finally { // cleanup
             if (serverSocket != null) {
-                try {
-                    serverSocket.close();
-                }
-                catch (IOException e) {
-                    e.printStackTrace();
-                }
+                try {serverSocket.close();}
+                catch (IOException ignored) {}
             }
         }
     }
